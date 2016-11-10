@@ -19,12 +19,13 @@
 	var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var ctx1 = canvas.getContext("2d");
+var pad = canvas.getContext("2d");
  var x = canvas.width/2;
 var y = canvas.height-30;
  var x1 = canvas.width/12;
 var y1 = canvas.height-10;
 var dx = 2;
-var dy = -2;
+var dy = -3;
 var dx1 = 2;
 var dy1 = -2;
 
@@ -47,7 +48,7 @@ Key board button Declaration for event handling
 var rightPressed = false;
 var leftPressed = false;
 
-
+var score=0;
 
 
 
@@ -101,14 +102,16 @@ function keyUpHandler(e) {
     }
 }
 
-
+var color1="#0095DD"
+var color2="#000000"
 
 
 function drawball()
 {
 	    ctx.beginPath();
+
+ctx.fillStyle = color1;
 ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-ctx.fillStyle = "#0095DD";
 ctx.fill();
 ctx.closePath();
 
@@ -118,7 +121,7 @@ function drawball2()
 {
         ctx1.beginPath();
 ctx1.arc(x1, y1, ballRadius, 0, Math.PI*2);
-ctx1.fillStyle = "#000000";
+ctx1.fillStyle = color2;
 ctx1.fill();
 ctx1.closePath();
 
@@ -133,11 +136,12 @@ function drawBricks() {
                 var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
                 bricks[c][r].x = brickX;
                 bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
-                ctx.fill();
-                ctx.closePath();
+                pad.beginPath();
+                pad.rect(brickX, brickY, brickWidth, brickHeight);
+                pad.fillStyle = "#0095DD";
+
+                pad.fill();
+                pad.closePath();
 
 
             }
@@ -146,7 +150,11 @@ function drawBricks() {
     }
 }
 
-
+function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: "+score, 8, 20);
+}
 
 
 function collisionDetection() {
@@ -157,11 +165,20 @@ function collisionDetection() {
                 if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
                     
                     dy = -dy;
+                    
 
-                    b.status = 0;
-                    if(b.status == 0)
-                    {
-                        ctx.fillStyle = "#8B3C2B";
+                 b.status = 0;
+                 var a1=score++;
+                                     ctx.fillStyle=color2;
+                    ctx1.fillStyle=color1;
+
+alert(a1)
+
+                    if(a1 == brickRowCount*brickColumnCount) {
+
+
+                        alert("YOU WIN, CONGRATULATIONS the score is !"+a1);
+                        document.location.reload();
                     }
                 }
             }
@@ -182,6 +199,7 @@ drawball();
 drawball2();
    drawPaddle();
  collisionDetection();
+drawScore();
 
 
 if(x + dx > canvas.width - ballRadius || x + dx < 0) {
@@ -208,19 +226,21 @@ if(y + dy < ballRadius)
    dy = -dy;
 } 
 
-else if(y + dy > canvas.height-ballRadius) {
+else if(y + dy > canvas.height) {
 
-    if(x > paddleX && x < paddleX + paddleWidth) {
+    if(x >= paddleX && x <= paddleX + paddleWidth) {
+
         if(y= y-paddleHeight)
         {
         dy = -dy;
         }
-
-    }
+}
+    
     else {
         alert("GAME OVER");
-        document.location.reload();
+               document.location.reload();
     }
+
 }
 
 x1 += dx1;
