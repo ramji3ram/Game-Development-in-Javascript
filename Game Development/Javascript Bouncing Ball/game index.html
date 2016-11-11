@@ -167,17 +167,15 @@ function collisionDetection() {
                     dy = -dy;
                     
 
-                 b.status = 0;
-                 var a1=score++;
-                                     ctx.fillStyle=color2;
-                    ctx1.fillStyle=color1;
-
-alert(a1)
-
-                    if(a1 == brickRowCount*brickColumnCount) {
+                
+                 score+=2;
+                  b.status = 0;   
 
 
-                        alert("YOU WIN, CONGRATULATIONS the score is !"+a1);
+                    if(score == 2*(brickRowCount*brickColumnCount)) {
+
+
+                        alert("YOU WIN, CONGRATULATIONS the score is !"+score);
                         document.location.reload();
                     }
                 }
@@ -199,7 +197,7 @@ drawball();
 drawball2();
    drawPaddle();
  collisionDetection();
-drawScore();
+/*drawScore();*/
 
 
 if(x + dx > canvas.width - ballRadius || x + dx < 0) {
